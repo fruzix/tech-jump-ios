@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */; };
+		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,7 +80,7 @@
 		CFF1010F2ECB3CE3007A6466 = {
 			isa = PBXGroup;
 			children = (
-				CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */,
+				CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */,
 				CFF1011A2ECB3CE3007A6466 /* TechJumpIOS */,
 				CFF101282ECB3CE4007A6466 /* TechJumpIOSTests */,
 				CFF101322ECB3CE4007A6466 /* TechJumpIOSUITests */,
@@ -106,6 +106,7 @@
 			buildConfigurationList = CFF101392ECB3CE4007A6466 /* Build configuration list for PBXNativeTarget "TechJumpIOS" */;
 			buildPhases = (
 				CFF101142ECB3CE3007A6466 /* Sources */,
+				CF710B402ECB74BE00C94EFF /* Run Script - SwiftLint */,
 				CFF101152ECB3CE3007A6466 /* Frameworks */,
 				CFF101162ECB3CE3007A6466 /* Resources */,
 			);
@@ -222,7 +223,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF710B1B2ECB4CB900C94EFF /* .swiftlint.yml in Resources */,
+				CF710B1B2ECB4CB900C94EFF /* .swiftlint.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +242,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CF710B402ECB74BE00C94EFF /* Run Script - SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script - SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CFF101142ECB3CE3007A6466 /* Sources */ = {
