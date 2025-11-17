@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CFF101262ECB3CE4007A6466 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CFF101182ECB3CE3007A6466 /* TechJumpIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechJumpIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF101252ECB3CE4007A6466 /* TechJumpIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechJumpIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF1012F2ECB3CE4007A6466 /* TechJumpIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechJumpIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +80,7 @@
 		CFF1010F2ECB3CE3007A6466 = {
 			isa = PBXGroup;
 			children = (
+				CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */,
 				CFF1011A2ECB3CE3007A6466 /* TechJumpIOS */,
 				CFF101282ECB3CE4007A6466 /* TechJumpIOSTests */,
 				CFF101322ECB3CE4007A6466 /* TechJumpIOSUITests */,
@@ -106,6 +112,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CFF1015C2ECB4646007A6466 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				CFF1011A2ECB3CE3007A6466 /* TechJumpIOS */,
@@ -195,6 +202,9 @@
 			);
 			mainGroup = CFF1010F2ECB3CE3007A6466;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CFF1015A2ECB45B0007A6466 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CFF101192ECB3CE3007A6466 /* Products */;
 			projectDirPath = "";
@@ -212,6 +222,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF710B1B2ECB4CB900C94EFF /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +276,10 @@
 			isa = PBXTargetDependency;
 			target = CFF101172ECB3CE3007A6466 /* TechJumpIOS */;
 			targetProxy = CFF101302ECB3CE4007A6466 /* PBXContainerItemProxy */;
+		};
+		CFF1015C2ECB4646007A6466 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = CFF1015B2ECB4646007A6466 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -395,6 +410,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HQDCRLK5UR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -422,6 +438,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HQDCRLK5UR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -550,6 +567,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CFF1015A2ECB45B0007A6466 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.62.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CFF1015B2ECB4646007A6466 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFF1015A2ECB45B0007A6466 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CFF101102ECB3CE3007A6466 /* Project object */;
 }
