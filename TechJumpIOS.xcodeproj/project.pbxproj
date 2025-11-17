@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yaml; sourceTree = "<group>"; };
 		CFF101182ECB3CE3007A6466 /* TechJumpIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechJumpIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF101252ECB3CE4007A6466 /* TechJumpIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechJumpIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF1012F2ECB3CE4007A6466 /* TechJumpIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechJumpIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
