@@ -1,0 +1,38 @@
+name: iOS CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Lint & Test (iOS)
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Xcode
+        # Optional: pin a specific Xcode version if needed
+        # Run `xcodebuild -version` locally to see versions on GitHub runners if you want to match.
+        run: xcodebuild -version
+
+      - name: Install SwiftLint
+        run: |
+          brew update
+          brew install swiftlint
+
+      - name: Run SwiftLint
+        run: |
+          swiftlint --reporter github-actions-logging --strict --config .swiftlint.yaml
+
+      - name: Run tests
+        # This step only runs if SwiftLint succeeded
+        if: ${{ success() }}
+        run: |
+          xcodebuild \
+            -scheme "TechJumpIOS" \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            clean test
