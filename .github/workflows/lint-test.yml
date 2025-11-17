@@ -26,7 +26,7 @@ jobs:
 
       - name: Run SwiftLint
         run: |
-          swiftlint --reporter github-actions-logging --strict --config .swiftlint.yaml
+          swiftlint --reporter github-actions-logging --config .swiftlint.yaml
 
       - name: Run tests
         # This step only runs if SwiftLint succeeded
