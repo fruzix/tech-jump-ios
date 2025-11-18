@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */; };
+		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yaml; sourceTree = "<group>"; };
 		CFF101182ECB3CE3007A6466 /* TechJumpIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechJumpIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF101252ECB3CE4007A6466 /* TechJumpIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechJumpIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFF1012F2ECB3CE4007A6466 /* TechJumpIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechJumpIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +80,7 @@
 		CFF1010F2ECB3CE3007A6466 = {
 			isa = PBXGroup;
 			children = (
-				CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yml */,
+				CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */,
 				CFF1011A2ECB3CE3007A6466 /* TechJumpIOS */,
 				CFF101282ECB3CE4007A6466 /* TechJumpIOSTests */,
 				CFF101322ECB3CE4007A6466 /* TechJumpIOSUITests */,
@@ -106,13 +106,13 @@
 			buildConfigurationList = CFF101392ECB3CE4007A6466 /* Build configuration list for PBXNativeTarget "TechJumpIOS" */;
 			buildPhases = (
 				CFF101142ECB3CE3007A6466 /* Sources */,
+				CF710B402ECB74BE00C94EFF /* Run Script - SwiftLint */,
 				CFF101152ECB3CE3007A6466 /* Frameworks */,
 				CFF101162ECB3CE3007A6466 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CFF1015C2ECB4646007A6466 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				CFF1011A2ECB3CE3007A6466 /* TechJumpIOS */,
@@ -222,7 +222,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF710B1B2ECB4CB900C94EFF /* .swiftlint.yml in Resources */,
+				CF710B1B2ECB4CB900C94EFF /* .swiftlint.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +241,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CF710B402ECB74BE00C94EFF /* Run Script - SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script - SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CFF101142ECB3CE3007A6466 /* Sources */ = {
@@ -276,10 +297,6 @@
 			isa = PBXTargetDependency;
 			target = CFF101172ECB3CE3007A6466 /* TechJumpIOS */;
 			targetProxy = CFF101302ECB3CE4007A6466 /* PBXContainerItemProxy */;
-		};
-		CFF1015C2ECB4646007A6466 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = CFF1015B2ECB4646007A6466 /* SwiftLintBuildToolPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -578,14 +595,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CFF1015B2ECB4646007A6466 /* SwiftLintBuildToolPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFF1015A2ECB45B0007A6466 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
-			productName = "plugin:SwiftLintBuildToolPlugin";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CFF101102ECB3CE3007A6466 /* Project object */;
 }
