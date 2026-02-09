@@ -9,9 +9,29 @@ import SwiftUI
 
 @main
 struct TechJumpIOSApp: App {
+    private let environment = AppEnvironment.bootstrap()
+
+    var rootView: some View {
+        environment.rootView
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            rootView
+        }
+    }
+}
+
+extension AppEnvironment {
+    var rootView: some View {
+        VStack {
+            PokemonList()
+                .modelContainer(modelContainer)
+                .inject(diContainer)
+            if modelContainer.isStub {
+                Text("⚠️ There is an issue with local database")
+                    .font(.caption2)
+            }
         }
     }
 }

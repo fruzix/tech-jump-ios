@@ -8,8 +8,6 @@
 import Foundation
 import SwiftData
 
-enum DBModel {}
-
 extension DBModel {
     @Model final class Pokemon {
         var name: String

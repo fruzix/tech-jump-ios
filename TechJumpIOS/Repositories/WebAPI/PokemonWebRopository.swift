@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PokemonWebRepository: WebRepository {
-    func pokemonList(offset: Int, limit: Int) async throws -> [ApiModel.PokemonList]
+    func pokemonList(offset: Int, limit: Int) async throws -> ApiModel.PokemonList
 }
 
 struct PokemonDataWebRepository: PokemonWebRepository {
@@ -20,8 +20,8 @@ struct PokemonDataWebRepository: PokemonWebRepository {
         self.baseURL = "https://pokeapi.co/api/v2/pokemon"
     }
 
-    func pokemonList(offset: Int = 20, limit: Int = 20) async throws -> [ApiModel.PokemonList] {
-        return try await call(endpoint: API.pokemonList(offset: <#T##Int#>, limit: <#T##Int#>))
+    func pokemonList(offset: Int = 20, limit: Int = 20) async throws -> ApiModel.PokemonList {
+        return try await call(endpoint: API.pokemonList(offset: offset, limit: limit))
     }
 }
 
