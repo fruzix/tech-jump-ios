@@ -12,11 +12,13 @@ extension DBModel {
     @Model final class Pokemon {
         var name: String
         var url: String
+        var svgUrl: String
         var id: Int
 
-        init(name: String, url: String, id: Int) {
+        init(name: String, url: String, id: Int, svgUrl: String) {
             self.name = name
             self.url = url
+            self.svgUrl = svgUrl
             self.id = id
         }
     }
@@ -27,11 +29,13 @@ extension ApiModel {
         let name: String
         let url: String
         let id: Int
+        var svgUrl: String
 
-        init(name: String, url: String, id: Int) {
+        init(name: String, url: String, id: Int, svgUrl: String) {
             self.name = name
             self.url = url
             self.id = id
+            self.svgUrl = svgUrl
         }
 
         init(from decoder: any Decoder) throws {
@@ -43,6 +47,7 @@ extension ApiModel {
                 let url = URL(string: url),
                 let idString = url.pathComponents.last(where: { !$0.isEmpty }),
                 let id = Int(idString)
+
             else {
                 throw DecodingError.dataCorruptedError(
                     forKey: .url,
@@ -52,6 +57,7 @@ extension ApiModel {
             }
 
             self.id = id
+            self.svgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/\(self.id).svg"
         }
     }
 }

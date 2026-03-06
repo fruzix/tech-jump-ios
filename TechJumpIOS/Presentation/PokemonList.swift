@@ -82,8 +82,8 @@ private extension PokemonList {
     @ViewBuilder
     func loadedView() -> some View {
         let columns = [
-            GridItem(.flexible(), spacing: 16),
-            GridItem(.flexible(), spacing: 16)
+            GridItem(.flexible()),
+            GridItem(.flexible())
         ]
 
         ScrollView {
@@ -91,7 +91,7 @@ private extension PokemonList {
                 ForEach(pokemons, id: \.id) { pokemon in
                     PokemonItem(pokemon: pokemon)
                 }
-            }.padding(16)
+            }.padding(14)
         }
     }
 }

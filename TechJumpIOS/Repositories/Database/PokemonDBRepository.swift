@@ -29,6 +29,6 @@ extension MainDBRepository: PokemonDBRepository {
 
 extension ApiModel.Pokemon {
     func dbModel() -> DBModel.Pokemon {
-        return .init(name: name, url: url, id: id)
+        return .init(name: name, url: url, id: id, svgUrl: svgUrl)
     }
 }

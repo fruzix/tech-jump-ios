@@ -14,46 +14,30 @@ struct PokemonItem: View {
 
     @Environment(\.injected) private var injected: DIContainer
 
-    @Query private var cached: [DBModel.CachedSVG]
-
     init(pokemon: DBModel.Pokemon) {
         self.pokemon = pokemon
-
-        let pokemonId = pokemon.id
-        _cached = Query(filter: #Predicate<DBModel.CachedSVG> { $0.id == pokemonId })
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
             ZStack {
-                RoundedRectangle(cornerRadius: 14).fill(Color(.systemGray6))
-                svgThumb
-                    .padding(18)
-            }.frame(height: 180)
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(.systemGray6))
 
-            Text(pokemon.name.capitalized).font(.system(size: 22, weight: .bold))
+                SVGDataView(urlString: pokemon.svgUrl)
+                    .padding(18)
+            }
+            .frame(height: 120)
+
+            Text(pokemon.name.capitalized)
+                .font(.system(size: 16, weight: .bold))
                 .foregroundColor(.primary)
                 .lineLimit(1)
+                .padding(.leading, 4)
                 .minimumScaleFactor(0.8)
         }
         .padding(14)
-        .background(Color.white)
+        .background(Color(.systemGray5))
         .cornerRadius(18)
-        .task(id: pokemon.id) {
-            guard cached.first == nil else { return }
-
-            do {
-                try await injected.interactors.pokemonSVG.getPokemonSVG(id: String(pokemon.id))
-            } catch {}
-        }
-    }
-
-    @ViewBuilder
-    private var svgThumb: some View {
-        if let svg = cached.first {
-            SwiftSVGView(svgData: svg.data).frame(maxWidth: .infinity, maxHeight: .infinity)
-        } else {
-            ProgressView()
-        }
     }
 }

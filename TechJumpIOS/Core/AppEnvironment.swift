@@ -43,15 +43,14 @@ extension AppEnvironment {
 
     private static func configuredWebRepositories(session: URLSession) -> DIContainer.WebRepositories {
         let pokemons = PokemonDataWebRepository(session: session)
-        let pokemonsSvg = PokemonSVGWebRepository(session: session)
 
-        return .init(pokemons: pokemons, pokemonSvg: pokemonsSvg)
+        return .init(pokemons: pokemons)
     }
 
     private static func configuredDBRepositories(modelContainer: ModelContainer) -> DIContainer.DBRepositories {
         let mainDBRepository = MainDBRepository(modelContainer: modelContainer)
 
-        return .init(pokemons: mainDBRepository, pokemonSvg: mainDBRepository)
+        return .init(pokemons: mainDBRepository)
     }
 
     private static func configuredModelContainer() -> ModelContainer {
@@ -71,9 +70,8 @@ extension AppEnvironment {
         let pokemons = RealPokemonInteractor(
             webRepository: webRepositories.pokemons,
             dbRepository: dbRepositories.pokemons)
-        let pokemonSvg = RealPokemonSVGInteractor(webRepository: webRepositories.pokemonSvg, dbRepository: dbRepositories.pokemonSvg)
 
         return .init(
-            pokemons: pokemons, pokemonSVG: pokemonSvg)
+            pokemons: pokemons)
     }
 }
