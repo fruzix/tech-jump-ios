@@ -81,13 +81,17 @@ private extension PokemonList {
 private extension PokemonList {
     @ViewBuilder
     func loadedView() -> some View {
-        VStack {
-            if pokemons.isEmpty {
-                Button(action: { loadPokemonList(forceReload: false) }, label: { Text("Nothing found").bold() })
-            }
-            List(pokemons, id: \.id) { pokemon in
-                PokemonItem(pokemon: pokemon)
-            }
+        let columns = [
+            GridItem(.flexible(), spacing: 16),
+            GridItem(.flexible(), spacing: 16)
+        ]
+
+        ScrollView {
+            LazyVGrid(columns: columns) {
+                ForEach(pokemons, id: \.id) { pokemon in
+                    PokemonItem(pokemon: pokemon)
+                }
+            }.padding(16)
         }
     }
 }
