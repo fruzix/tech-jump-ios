@@ -19,8 +19,8 @@ struct RealPokemonInteractor: PokemonInteractor {
     }
 
     private enum Constants {
-        static let offset: Int = 100
-        static let limit: Int = 100
+        static let offset: Int = 20
+        static let limit: Int = 20
     }
 }
 

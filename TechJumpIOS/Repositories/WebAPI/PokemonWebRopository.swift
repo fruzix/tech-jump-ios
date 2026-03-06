@@ -20,7 +20,7 @@ struct PokemonDataWebRepository: PokemonWebRepository {
         self.baseURL = "https://pokeapi.co/api/v2/pokemon"
     }
 
-    func pokemonList(offset: Int = 20, limit: Int = 20) async throws -> ApiModel.PokemonList {
+    func pokemonList(offset: Int, limit: Int) async throws -> ApiModel.PokemonList {
         return try await call(endpoint: API.pokemonList(offset: offset, limit: limit))
     }
 }
@@ -31,7 +31,7 @@ extension PokemonDataWebRepository {
 
         var path: String {
             switch self {
-            case let .pokemonList(offset, limit):
+            case let .pokemonList(offset: offset, limit: limit):
                 return "?offset=\(offset)&limit=\(limit)"
             }
         }
