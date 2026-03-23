@@ -7,7 +7,7 @@
 import Foundation
 
 protocol SVGWebRepository: WebRepository {
-    func loadSVG(url: String) async throws -> ApiModel.SVG
+    func loadSVG(url: String) async throws -> Data
 }
 
 struct SVGDataWebRepository: SVGWebRepository {
@@ -19,11 +19,11 @@ struct SVGDataWebRepository: SVGWebRepository {
         self.baseURL = baseURL
     }
 
-    func loadSVG(url: String) async throws -> ApiModel.SVG {
+    func loadSVG(url: String) async throws -> Data {
         guard let svgURL = URL(string: url) else {
             throw URLError(.badURL)
         }
         let (data, _) = try await session.data(from: svgURL)
-        return ApiModel.SVG(data: data, url: url)
+        return data
     }
 }

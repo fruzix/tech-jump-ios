@@ -11,13 +11,10 @@ import SwiftUI
 
 struct PokemonItem: View {
     let pokemon: DBModel.Pokemon
-    @Query var svgItems: [DBModel.SVG]
     @Environment(\.injected) private var injected: DIContainer
 
     init(pokemon: DBModel.Pokemon) {
         self.pokemon = pokemon
-        // Query SVGs matching the pokemon's svgUrl
-        self._svgItems = Query(filter: #Predicate { $0.url == pokemon.svgUrl })
     }
 
     var body: some View {
@@ -26,13 +23,7 @@ struct PokemonItem: View {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(Color(.systemGray6))
 
-                if let svgData = svgItems.first?.data {
-                    RemoteSVGView(svgData: svgData)
-                        .padding(18)
-                } else {
-                    ProgressView()
-                        .padding(18)
-                }
+                SVGView(svgURL: pokemon.svgUrl)
             }
             .frame(height: 120)
 

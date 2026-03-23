@@ -16,7 +16,6 @@ extension Schema {
         Schema([
             DBModel.Pokemon.self,
             DBModel.PokemonList.self,
-            DBModel.SVG.self
         ], version: actualVersion)
     }
 }

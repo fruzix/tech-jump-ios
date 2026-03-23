@@ -30,36 +30,15 @@ extension DIContainer {
 
     struct DBRepositories {
         let pokemons: MainDBRepository
-        let svg: MainDBRepository
     }
 
     struct Interactors {
-        let pokemons: PokemonInteractor
         let svg: SVGInteractor
-
-        init(webRepositories: WebRepositories, dbRepositories: DBRepositories) {
-            let svg = SVGInteractor(
-                webRepository: webRepositories.svg,
-                dbRepository: dbRepositories.svg
-            )
-            self.svg = svg
-            self.pokemons = PokemonInteractor(
-                webRepository: webRepositories.pokemons,
-                dbRepository: dbRepositories.pokemons,
-                svgInteractor: svg
-            )
-        }
-
-        init(pokemons: PokemonInteractor, svg: SVGInteractor) {
-            self.pokemons = pokemons
-            self.svg = svg
-        }
+        let pokemons: PokemonInteractor
 
         static var stub: Self {
-            .init(
-                pokemons: .stub,
-                svg: .stub
-            )
+            .init(svg: StubSVGInteractor(),
+                  pokemons: StubPokemonsInteractor())
         }
     }
 }
@@ -70,7 +49,6 @@ extension EnvironmentValues {
 
 extension View {
     func inject(_ container: DIContainer) -> some View {
-        return self
-            .environment(\.injected, container)
+        return environment(\.injected, container)
     }
 }

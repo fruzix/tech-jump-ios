@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */; };
+		CFF3C5872F5AF3C5005A9C92 /* SwiftSVG in Frameworks */ = {isa = PBXBuildFile; productRef = CFF3C5862F5AF3C5005A9C92 /* SwiftSVG */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFF3C5872F5AF3C5005A9C92 /* SwiftSVG in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +79,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF4ECA012F3A119F00B908E1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CFF1010F2ECB3CE3007A6466 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +93,7 @@
 				CFF1011A2ECB3CE3007A6466 /* TechJumpIOS */,
 				CFF101282ECB3CE4007A6466 /* TechJumpIOSTests */,
 				CFF101322ECB3CE4007A6466 /* TechJumpIOSUITests */,
+				CF4ECA012F3A119F00B908E1 /* Frameworks */,
 				CFF101192ECB3CE3007A6466 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,6 +129,7 @@
 			);
 			name = TechJumpIOS;
 			packageProductDependencies = (
+				CFF3C5862F5AF3C5005A9C92 /* SwiftSVG */,
 			);
 			productName = TechJumpIOS;
 			productReference = CFF101182ECB3CE3007A6466 /* TechJumpIOS.app */;
@@ -204,6 +215,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CFF1015A2ECB45B0007A6466 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				CFF3C5852F5AF3AE005A9C92 /* XCRemoteSwiftPackageReference "SwiftSVG" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CFF101192ECB3CE3007A6466 /* Products */;
@@ -594,7 +606,23 @@
 				minimumVersion = 0.62.2;
 			};
 		};
+		CFF3C5852F5AF3AE005A9C92 /* XCRemoteSwiftPackageReference "SwiftSVG" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mchoe/SwiftSVG";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CFF3C5862F5AF3C5005A9C92 /* SwiftSVG */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFF3C5852F5AF3AE005A9C92 /* XCRemoteSwiftPackageReference "SwiftSVG" */;
+			productName = SwiftSVG;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CFF101102ECB3CE3007A6466 /* Project object */;
 }
