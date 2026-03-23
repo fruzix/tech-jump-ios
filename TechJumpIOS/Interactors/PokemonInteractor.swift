@@ -6,24 +6,22 @@
 //
 
 protocol PokemonInteractor {
-    func getPokemonList() async throws
+    func getPokemonList(offset: Int, limit: Int) async throws -> ApiModel.PokemonList
 }
 
 struct RealPokemonInteractor: PokemonInteractor {
     let webRepository: PokemonWebRepository
     let dbRepository: PokemonDBRepository
 
-    func getPokemonList() async throws {
-        let apiPokemons = try await webRepository.pokemonList(offset: Constants.offset, limit: Constants.limit)
-        try await dbRepository.store(pokemons: apiPokemons)
-    }
-
-    private enum Constants {
-        static let offset: Int = 20
-        static let limit: Int = 20
+    func getPokemonList(offset: Int, limit: Int) async throws -> ApiModel.PokemonList {
+        let page = try await webRepository.pokemonList(offset: offset, limit: limit)
+        try await dbRepository.store(pokemons: page)
+        return page
     }
 }
 
 struct StubPokemonsInteractor: PokemonInteractor {
-    func getPokemonList() async throws {}
+    func getPokemonList(offset _: Int, limit _: Int) async throws -> ApiModel.PokemonList {
+        .init(count: 0, next: "", previous: nil, results: [])
+    }
 }

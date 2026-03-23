@@ -12,6 +12,9 @@ import SwiftUI
 struct PokemonList: View {
     @Query(sort: \DBModel.Pokemon.name) private var pokemons: [DBModel.Pokemon]
     @State private(set) var pokemonsState: Loadable<Void>
+    @State private var nextOffset = 0
+    @State private var hasMorePages = true
+    @State private var isLoadingNextPage = false
 
     @State var navigationPath = NavigationPath()
     @State private var routingState: Routing = .init()
@@ -55,9 +58,15 @@ struct PokemonList: View {
 // MARK: - Loading Content
 
 private extension PokemonList {
+    enum Constants {
+        static let pageSize = 20
+        static let preloadThreshold = 4
+    }
+
     func defaultView() -> some View {
         Text("").onAppear {
             if !pokemons.isEmpty {
+                nextOffset = pokemons.count
                 pokemonsState = .loaded(())
             }
             loadPokemonList(forceReload: false)
@@ -89,13 +98,33 @@ private extension PokemonList {
 
         ScrollView {
             LazyVGrid(columns: columns) {
-                ForEach(pokemons, id: \.id) { pokemon in
+                ForEach(Array(pokemons.enumerated()), id: \.element.id) { index, pokemon in
                     PokemonItem(pokemon: pokemon)
+                        .onAppear {
+                            loadNextPageIfNeeded(currentIndex: index)
+                        }
                 }
             }
             .padding(.horizontal, 14)
             .padding(.top, 14)
+
+            if isLoadingNextPage {
+                loadingNextPageView()
+            }
         }
+    }
+
+    func loadingNextPageView() -> some View {
+        HStack(spacing: 10) {
+            ProgressView()
+                .progressViewStyle(.circular)
+
+            Text("Loading more pokemons...")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
     }
 }
 
@@ -103,9 +132,65 @@ private extension PokemonList {
 
 private extension PokemonList {
     private func loadPokemonList(forceReload: Bool) {
+        guard !isLoadingNextPage else { return }
+
+        if forceReload {
+            hasMorePages = true
+            nextOffset = pokemons.count
+        }
+
         guard forceReload || pokemons.isEmpty else { return }
-        $pokemonsState.load {
-            try await injected.interactors.pokemons.getPokemonList()
+
+        isLoadingNextPage = true
+        pokemonsState.setIsLoading(cancelBag: CancelBag())
+
+        Task {
+            do {
+                let page = try await injected.interactors.pokemons.getPokemonList(
+                    offset: nextOffset,
+                    limit: Constants.pageSize
+                )
+
+                await MainActor.run {
+                    nextOffset += page.results.count
+                    hasMorePages = !page.next.isEmpty
+                    isLoadingNextPage = false
+                    pokemonsState = .loaded(())
+                }
+            } catch {
+                await MainActor.run {
+                    isLoadingNextPage = false
+                    pokemonsState = .failed(error)
+                }
+            }
+        }
+    }
+
+    private func loadNextPageIfNeeded(currentIndex: Int) {
+        let thresholdIndex = max(pokemons.count - Constants.preloadThreshold, 0)
+        guard currentIndex >= thresholdIndex else { return }
+        guard hasMorePages else { return }
+        guard !isLoadingNextPage else { return }
+        guard case .loaded = pokemonsState else { return }
+
+        isLoadingNextPage = true
+
+        Task {
+            do {
+                let page = try await injected.interactors.pokemons.getPokemonList(
+                    offset: nextOffset,
+                    limit: Constants.pageSize
+                )
+                await MainActor.run {
+                    nextOffset += page.results.count
+                    hasMorePages = !page.next.isEmpty
+                    isLoadingNextPage = false
+                }
+            } catch {
+                await MainActor.run {
+                    isLoadingNextPage = false
+                }
+            }
         }
     }
 }
