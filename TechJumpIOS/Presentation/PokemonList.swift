@@ -35,6 +35,7 @@ struct PokemonList: View {
                 .onReceive(routingUpdate) { self.routingState = $0 }
                 .navigationTitle("Pokemons")
         }
+        .ignoresSafeArea(edges: .bottom)
     }
 
     @ViewBuilder private var content: some View {
@@ -91,7 +92,9 @@ private extension PokemonList {
                 ForEach(pokemons, id: \.id) { pokemon in
                     PokemonItem(pokemon: pokemon)
                 }
-            }.padding(14)
+            }
+            .padding(.horizontal, 14)
+            .padding(.top, 14)
         }
     }
 }
