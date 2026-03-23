@@ -8,7 +8,6 @@
 import SwiftData
 
 extension ModelContainer {
-
     static func appModelContainer(
         inMemoryOnly: Bool = false, isStub: Bool = false
     ) throws -> ModelContainer {
@@ -27,4 +26,5 @@ extension ModelContainer {
 }
 
 @ModelActor
-final actor MainDBRepository { }
+final actor MainDBRepository {}
+

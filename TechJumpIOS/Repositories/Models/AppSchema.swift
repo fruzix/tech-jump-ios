@@ -15,7 +15,8 @@ extension Schema {
     static var appSchema: Schema {
         Schema([
             DBModel.Pokemon.self,
-            DBModel.PokemonList.self
+            DBModel.PokemonList.self,
+            DBModel.SVG.self
         ], version: actualVersion)
     }
 }
