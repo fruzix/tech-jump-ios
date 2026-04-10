@@ -11,11 +11,13 @@ import SwiftUI
 
 struct SVGView: View {
     private let svgURL: String
+    private let pokemonId: Int
     @Environment(\.injected) var injected: DIContainer
     @State private var svg: Loadable<Data>
 
-    init(svgURL: String, svg: Loadable<Data> = .notRequested) {
+    init(svgURL: String, pokemonId: Int, svg: Loadable<Data> = .notRequested) {
         self.svgURL = svgURL
+        self.pokemonId = pokemonId
         self._svg = .init(initialValue: svg)
     }
 
@@ -42,7 +44,7 @@ struct SVGView: View {
 private extension SVGView {
     func loadSvg() {
         injected.interactors.svg
-            .load(data: $svg, url: svgURL)
+            .load(data: $svg, url: svgURL, pokemonId: pokemonId)
     }
 }
 
@@ -136,8 +138,8 @@ final class SVGHostingView: UIView {
 
 #Preview {
     VStack {
-        SVGView(svgURL: "")
-        SVGView(svgURL: "")
-        SVGView(svgURL: "")
+        SVGView(svgURL: "", pokemonId: 0)
+        SVGView(svgURL: "", pokemonId: 0)
+        SVGView(svgURL: "", pokemonId: 0)
     }
 }

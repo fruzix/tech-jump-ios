@@ -23,7 +23,7 @@ struct PokemonItem: View {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(Color(.systemGray6))
 
-                SVGView(svgURL: pokemon.svgUrl)
+                SVGView(svgURL: pokemon.svgUrl, pokemonId: pokemon.id)
             }
             .frame(height: 120)
 
