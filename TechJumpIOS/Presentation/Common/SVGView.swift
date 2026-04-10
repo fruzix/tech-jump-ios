@@ -83,23 +83,33 @@ struct SVGRenderView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: SVGHostingView, context: Context) {
-        uiView.render(data: svgData)
+        uiView.renderIfNeeded(data: svgData)
     }
 }
 
 final class SVGHostingView: UIView {
     private var svgLayer: SVGLayer?
+    private var renderedData: Data?
+
+    @MainActor
+    func renderIfNeeded(data: Data) {
+        guard data != renderedData else { return }
+        render(data: data)
+    }
 
     @MainActor
     func render(data: Data) {
+        renderedData = data
         clearLayer()
 
         _ = UIView(svgData: data) { [weak self] layer in
-            guard let self else { return }
-            svgLayer = layer
-            self.layer.addSublayer(layer)
-            setNeedsLayout()
-            layoutIfNeeded()
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.svgLayer = layer
+                self.layer.addSublayer(layer)
+                self.setNeedsLayout()
+                self.layoutIfNeeded()
+            }
         }
     }
 

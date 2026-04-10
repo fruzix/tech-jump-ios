@@ -30,6 +30,7 @@ extension DIContainer {
 
     struct DBRepositories {
         let pokemons: MainDBRepository
+        let svg: SVGDBRepository
     }
 
     struct Interactors {

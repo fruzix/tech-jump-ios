@@ -12,19 +12,27 @@ protocol SVGInteractor {
     func load(data: LoadableSubject<Data>, url: String?)
 }
 
-struct SVGDataInteractor: SVGInteractor {
+final class SVGDataInteractor: SVGInteractor {
     let webRepository: SVGWebRepository
+    let dbRepository: SVGDBRepository
 
-    init(webRepository: SVGWebRepository) {
+    init(webRepository: SVGWebRepository, dbRepository: SVGDBRepository) {
         self.webRepository = webRepository
+        self.dbRepository = dbRepository
     }
 
     func load(data: LoadableSubject<Data>, url: String?) {
         guard let url else {
             data.wrappedValue = .notRequested; return
         }
-        data.load {
-            try await webRepository.loadSVG(url: url)
+        if let cached = dbRepository.cachedSVG(for: url) {
+            data.wrappedValue = .loaded(cached)
+            return
+        }
+        data.load { [dbRepository] in
+            let result = try await self.webRepository.loadSVG(url: url)
+            dbRepository.cacheSVG(result, for: url)
+            return result
         }
     }
 }

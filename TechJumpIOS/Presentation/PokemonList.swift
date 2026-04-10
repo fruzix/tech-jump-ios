@@ -98,10 +98,12 @@ private extension PokemonList {
 
         ScrollView {
             LazyVGrid(columns: columns) {
-                ForEach(Array(pokemons.enumerated()), id: \.element.id) { index, pokemon in
+                ForEach(pokemons) { pokemon in
                     PokemonItem(pokemon: pokemon)
                         .onAppear {
-                            loadNextPageIfNeeded(currentIndex: index)
+                            if let index = pokemons.firstIndex(where: { $0.id == pokemon.id }) {
+                                loadNextPageIfNeeded(currentIndex: index)
+                            }
                         }
                 }
             }
