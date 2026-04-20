@@ -3,6 +3,7 @@ import SwiftData
 
 extension ApiModel {
     struct PokemonDetails: Decodable {
+        let id: Int
         let types: [String]
         let abilities: [Ability]
         let forms: [String]
@@ -11,6 +12,7 @@ extension ApiModel {
         let baseExperience: Int
 
         enum CodingKeys: String, CodingKey {
+            case id
             case types
             case abilities
             case forms
@@ -19,7 +21,8 @@ extension ApiModel {
             case baseExperience = "base_experience"
         }
 
-        init(height: Int, weight: Int, baseExperience: Int, types: [String], abilities: [Ability], forms: [String]) {
+        init(id: Int, height: Int, weight: Int, baseExperience: Int, types: [String], abilities: [Ability], forms: [String]) {
+            self.id = id
             self.height = height
             self.weight = weight
             self.baseExperience = baseExperience
@@ -31,6 +34,7 @@ extension ApiModel {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
+            id = try container.decode(Int.self, forKey: .id)    
             height = try container.decode(Int.self, forKey: .height)
             weight = try container.decode(Int.self, forKey: .weight)
             baseExperience = try container.decode(Int.self, forKey: .baseExperience)

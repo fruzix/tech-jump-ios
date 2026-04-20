@@ -10,6 +10,7 @@ import SwiftData
 
 extension DBModel {
     @Model final class PokemonDBDetails {
+        var pokemonId: Int
         var types: [String]
         var abilities: [Ability]
         var forms: [String]
@@ -22,12 +23,13 @@ extension DBModel {
         var shape: String?
         var habitat: String?
 
-        init(types: [String], abilities: [Ability], forms: [String], height: Int, weight: Int, baseExperience: Int, color: String,
+        init(pokemonId: Int, types: [String], abilities: [Ability], forms: [String], height: Int, weight: Int, baseExperience: Int, color: String,
              captureRate: Int,
              eggGroups: [String],
              shape: String?,
              habitat: String?)
         {
+            self.pokemonId = pokemonId
             self.types = types
             self.abilities = abilities
             self.forms = forms

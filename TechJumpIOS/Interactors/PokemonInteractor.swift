@@ -34,6 +34,7 @@ struct StubPokemonsInteractor: PokemonInteractor {
     }
 
     func getPokemonDetails(pokemonId _: Int) async throws -> ApiModel.PokemonDetails {
-        .init(height: 0, weight: 0, baseExperience: 0, types: [""], abilities: [ApiModel.Ability(name: "", isHidden: true)], forms: [""])
+        .init(id: 0, height: 0, weight: 0, baseExperience: 0, types: [""], abilities: [ApiModel.Ability(name: "", isHidden: true)], forms: [""])
     }
 }
+
