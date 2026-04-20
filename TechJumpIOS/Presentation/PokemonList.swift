@@ -37,6 +37,9 @@ struct PokemonList: View {
             content
                 .onReceive(routingUpdate) { self.routingState = $0 }
                 .navigationTitle("Pokemons")
+                .navigationDestination(for: DBModel.Pokemon.ID.self) { pokemonID in
+                    PokemonDetailsView(pokemonID: pokemonID)
+                }
         }
         .ignoresSafeArea(edges: .bottom)
     }
@@ -99,12 +102,14 @@ private extension PokemonList {
         ScrollView {
             LazyVGrid(columns: columns) {
                 ForEach(pokemons) { pokemon in
-                    PokemonItem(pokemon: pokemon)
-                        .onAppear {
-                            if let index = pokemons.firstIndex(where: { $0.id == pokemon.id }) {
-                                loadNextPageIfNeeded(currentIndex: index)
+                    NavigationLink(value: pokemon.id) {
+                        PokemonItem(pokemon: pokemon)
+                            .onAppear {
+                                if let index = pokemons.firstIndex(where: { $0.id == pokemon.id }) {
+                                    loadNextPageIfNeeded(currentIndex: index)
+                                }
                             }
-                        }
+                    }
                 }
             }
             .padding(.horizontal, 14)

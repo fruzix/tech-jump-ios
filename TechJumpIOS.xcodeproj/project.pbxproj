@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF710B1B2ECB4CB900C94EFF /* .swiftlint.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CF710B1A2ECB4CAF00C94EFF /* .swiftlint.yaml */; };
-		CFF3C5872F5AF3C5005A9C92 /* SwiftSVG in Frameworks */ = {isa = PBXBuildFile; productRef = CFF3C5862F5AF3C5005A9C92 /* SwiftSVG */; };
+		CFF15FB42F963BD000348B39 /* SwiftSVG in Frameworks */ = {isa = PBXBuildFile; productRef = CFF15FB32F963BD000348B39 /* SwiftSVG */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFF3C5872F5AF3C5005A9C92 /* SwiftSVG in Frameworks */,
+				CFF15FB42F963BD000348B39 /* SwiftSVG in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +129,7 @@
 			);
 			name = TechJumpIOS;
 			packageProductDependencies = (
-				CFF3C5862F5AF3C5005A9C92 /* SwiftSVG */,
+				CFF15FB32F963BD000348B39 /* SwiftSVG */,
 			);
 			productName = TechJumpIOS;
 			productReference = CFF101182ECB3CE3007A6466 /* TechJumpIOS.app */;
@@ -215,7 +215,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CFF1015A2ECB45B0007A6466 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
-				CFF3C5852F5AF3AE005A9C92 /* XCRemoteSwiftPackageReference "SwiftSVG" */,
+				CFF15FB22F963BC900348B39 /* XCRemoteSwiftPackageReference "SwiftSVG" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CFF101192ECB3CE3007A6466 /* Products */;
@@ -606,7 +606,7 @@
 				minimumVersion = 0.62.2;
 			};
 		};
-		CFF3C5852F5AF3AE005A9C92 /* XCRemoteSwiftPackageReference "SwiftSVG" */ = {
+		CFF15FB22F963BC900348B39 /* XCRemoteSwiftPackageReference "SwiftSVG" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mchoe/SwiftSVG";
 			requirement = {
@@ -617,9 +617,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CFF3C5862F5AF3C5005A9C92 /* SwiftSVG */ = {
+		CFF15FB32F963BD000348B39 /* SwiftSVG */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CFF3C5852F5AF3AE005A9C92 /* XCRemoteSwiftPackageReference "SwiftSVG" */;
+			package = CFF15FB22F963BC900348B39 /* XCRemoteSwiftPackageReference "SwiftSVG" */;
 			productName = SwiftSVG;
 		};
 /* End XCSwiftPackageProductDependency section */
