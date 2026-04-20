@@ -9,6 +9,7 @@ import SwiftData
 
 enum DBModel {}
 
+
 extension Schema {
     private static var actualVersion: Schema.Version = Version(1, 0, 0)
 
@@ -16,6 +17,7 @@ extension Schema {
         Schema([
             DBModel.Pokemon.self,
             DBModel.PokemonList.self,
+            DBModel.PokemonDBDetails.self,
         ], version: actualVersion)
     }
 }

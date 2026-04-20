@@ -7,6 +7,7 @@
 
 protocol PokemonInteractor {
     func getPokemonList(offset: Int, limit: Int) async throws -> ApiModel.PokemonList
+    func getPokemonDetails(pokemonId: Int) async throws -> ApiModel.PokemonDetails
 }
 
 struct RealPokemonInteractor: PokemonInteractor {
@@ -18,10 +19,21 @@ struct RealPokemonInteractor: PokemonInteractor {
         try await dbRepository.store(pokemons: page)
         return page
     }
+
+    func getPokemonDetails(pokemonId: Int) async throws -> ApiModel.PokemonDetails {
+        let details = try await webRepository.details(pokemonId: pokemonId)
+        let species = try await webRepository.species(pokemonId: pokemonId)
+        try await dbRepository.store(pokemonDetails: details, pokemonSpecies: species)
+        return details
+    }
 }
 
 struct StubPokemonsInteractor: PokemonInteractor {
     func getPokemonList(offset _: Int, limit _: Int) async throws -> ApiModel.PokemonList {
         .init(count: 0, next: "", previous: nil, results: [])
+    }
+
+    func getPokemonDetails(pokemonId _: Int) async throws -> ApiModel.PokemonDetails {
+        .init(height: 0, weight: 0, baseExperience: 0, types: [""], abilities: [ApiModel.Ability(name: "", isHidden: true)], forms: [""])
     }
 }
