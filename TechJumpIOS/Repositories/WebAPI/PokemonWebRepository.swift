@@ -46,11 +46,10 @@ extension PokemonDataWebRepository {
             case let .pokemonList(offset: offset, limit: limit):
                 return "?offset=\(offset)&limit=\(limit)"
             case let .details(pokemonId: pokemonId):
-                return "/\(pokemonId)&"
+                return "/\(pokemonId)"
             case let .species(pokemonId: pokemonId):
-                return "-species/\(pokemonId)&"
+                return "-species/\(pokemonId)"
             }
-            
         }
 
         var method: String { "GET" }
