@@ -11,27 +11,22 @@ import SwiftUI
 struct PokemonDetailsView: View {
     let pokemonID: Int
 
-    @Query private var pokemons: [DBModel.Pokemon]
     @State private var details: Loadable<DBModel.PokemonDBDetails>
+    @State private var svgUrl: String?
 
     @Environment(\.injected) private var injected: DIContainer
 
     init(pokemonID: Int, details: Loadable<DBModel.PokemonDBDetails> = .notRequested) {
         self.pokemonID = pokemonID
-        _pokemons = Query(filter: #Predicate<DBModel.Pokemon> { pokemon in
-            pokemon.id == pokemonID
-        })
         self._details = .init(initialValue: details)
-    }
-
-    private var pokemon: DBModel.Pokemon? {
-        pokemons.first
     }
 
     var body: some View {
         content
-            .navigationTitle(pokemon?.name.capitalized ?? "Pokemon")
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                svgUrl = await injected.interactors.pokemons.getPokemonSVG(pokemonId: pokemonID)
+            }
     }
 
     @ViewBuilder private var content: some View {
@@ -43,7 +38,7 @@ struct PokemonDetailsView: View {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         case let .loaded(pokemonDetails):
-            loadedView(pokemon: pokemon ?? <#default value#>, details: pokemonDetails)
+            loadedView(details: pokemonDetails, svgUrl: svgUrl)
         case let .failed(error):
             ErrorView(error: error) {
                 Task {
@@ -55,10 +50,10 @@ struct PokemonDetailsView: View {
 }
 
 private extension PokemonDetailsView {
-    func loadedView(pokemon: DBModel.Pokemon, details: DBModel.PokemonDBDetails) -> some View {
+    func loadedView(details: DBModel.PokemonDBDetails, svgUrl: String?) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                PokemonHeaderCard(pokemon: pokemon, details: details)
+                PokemonHeaderCard(svgURL: svgUrl, pokemonID: pokemonID, details: details)
 
                 PokemonStatGrid(details: details)
 

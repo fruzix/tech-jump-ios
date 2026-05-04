@@ -50,3 +50,9 @@ extension LoadableSubject {
         task.store(in: cancelBag)
     }
 }
+
+struct ValueIsMissingError: Error {
+    var localizedDescription: String {
+        NSLocalizedString("Data is missing", comment: "")
+    }
+}

@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct PokemonHeaderCard: View {
-    let pokemon: DBModel.Pokemon
+    let svgURL: String?
+    let pokemonID: Int
     let details: DBModel.PokemonDBDetails
 
     var body: some View {
@@ -11,16 +12,24 @@ struct PokemonHeaderCard: View {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(color(for: details.color).opacity(0.18))
 
-                    SVGView(svgURL: pokemon.svgUrl, pokemonId: pokemon.id)
-                        .padding(18)
+                    if let svgURL {
+                        SVGView(svgURL: svgURL, pokemonId: pokemonID)
+                            .padding(18)
+                    } else {
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(.secondary)
+                            .padding(18)
+                    }
                 }
                 .frame(width: 136, height: 136)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(pokemon.name.capitalized)
+                    Text(details.forms.first ?? "Pokemon")
                         .font(.system(size: 28, weight: .bold, design: .rounded))
 
-                    Text(String(format: "#%04d", pokemon.id))
+                    Text(String(format: "#%04d", pokemonID))
                         .font(.headline)
                         .foregroundStyle(.secondary)
 

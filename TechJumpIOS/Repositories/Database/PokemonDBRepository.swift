@@ -9,10 +9,14 @@ import Foundation
 import SwiftData
 
 protocol PokemonDBRepository {
-    @MainActor
     func store(pokemons: ApiModel.PokemonList) async throws
 
     @MainActor
+    func pokemon(pokemonId: Int) async throws -> DBModel.Pokemon?
+
+    @MainActor
+    func pokemonDetails(pokemonId: Int) async throws -> DBModel.PokemonDBDetails?
+
     func store(pokemonDetails: ApiModel.PokemonDetails, pokemonSpecies: ApiModel.PokemonSpecies) async throws
 }
 
@@ -56,6 +60,36 @@ extension MainDBRepository: PokemonDBRepository {
         }
 
         try modelContext.save()
+    }
+
+    @MainActor
+    func pokemonDetails(pokemonId: Int) async -> DBModel.PokemonDBDetails? {
+        let fetchDescriptor = FetchDescriptor<DBModel.PokemonDBDetails>(
+            predicate: #Predicate<DBModel.PokemonDBDetails> {
+                $0.pokemonId == pokemonId
+            }
+        )
+
+        do {
+            return try modelContainer.mainContext.fetch(fetchDescriptor).first
+        } catch {
+            return nil
+        }
+    }
+
+    @MainActor
+    func pokemon(pokemonId: Int) async -> DBModel.Pokemon? {
+        let fetchDescriptor = FetchDescriptor<DBModel.Pokemon>(
+            predicate: #Predicate<DBModel.Pokemon> {
+                $0.id == pokemonId
+            }
+        )
+
+        do {
+            return try modelContainer.mainContext.fetch(fetchDescriptor).first
+        } catch {
+            return nil
+        }
     }
 }
 
