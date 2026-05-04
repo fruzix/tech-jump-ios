@@ -36,6 +36,6 @@ struct PokemonItem: View {
         }
         .padding(14)
         .background(Color(.systemGray5))
-        .cornerRadius(18)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 }

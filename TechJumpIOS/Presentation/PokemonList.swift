@@ -5,7 +5,7 @@
 //  Created by Aleksandra Niewińska on 12/01/2026.
 //
 
-import Combine
+
 import SwiftData
 import SwiftUI
 
@@ -32,7 +32,6 @@ struct PokemonList: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
-
                 .navigationTitle("Pokemons")
                 .navigationDestination(for: DBModel.Pokemon.ID.self) { pokemonID in
                     PokemonDetailsView(pokemonID: pokemonID)
