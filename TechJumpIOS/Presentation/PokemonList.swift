@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PokemonList: View {
     @Query(sort: \DBModel.Pokemon.name) private var pokemons: [DBModel.Pokemon]
-    @State private var pokemonsState: Loadable<Void>
+    @State private var pokemonsViewState: Loadable
 
     @State private var nextOffset = 0
     @State private var hasMorePages = true
@@ -20,8 +20,8 @@ struct PokemonList: View {
 
     @Environment(\.injected) private var injected: DIContainer
 
-    init(state: Loadable<Void> = .notRequested) {
-        self._pokemonsState = .init(initialValue: state)
+    init() {
+        self._pokemonsViewState = .init(initialValue: .notRequested)
     }
 
     var body: some View {
@@ -36,7 +36,7 @@ struct PokemonList: View {
     }
 
     @ViewBuilder private var content: some View {
-        switch pokemonsState {
+        switch pokemonsViewState {
         case .notRequested:
             defaultView()
         case .isLoading:
@@ -61,7 +61,7 @@ private extension PokemonList {
         Text("").onAppear {
             if !pokemons.isEmpty {
                 nextOffset = pokemons.count
-                pokemonsState = .loaded(())
+                pokemonsViewState = .loaded
             }
             loadPokemonList(forceReload: false)
         }
@@ -140,7 +140,7 @@ private extension PokemonList {
         guard forceReload || pokemons.isEmpty else { return }
 
         isLoadingNextPage = true
-        pokemonsState.setIsLoading(cancelBag: CancelBag())
+        pokemonsViewState.setIsLoading()
 
         Task {
             do {
@@ -153,12 +153,12 @@ private extension PokemonList {
                     nextOffset += page.results.count
                     hasMorePages = !page.next.isEmpty
                     isLoadingNextPage = false
-                    pokemonsState = .loaded(())
+                    pokemonsViewState = .loaded
                 }
             } catch {
                 await MainActor.run {
                     isLoadingNextPage = false
-                    pokemonsState = .failed(error)
+                    pokemonsViewState = .failed(error)
                 }
             }
         }

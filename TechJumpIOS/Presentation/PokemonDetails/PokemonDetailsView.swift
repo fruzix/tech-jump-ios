@@ -11,14 +11,16 @@ import SwiftUI
 struct PokemonDetailsView: View {
     let pokemonID: Int
 
-    @State private var details: Loadable<DBModel.PokemonDBDetails>
+    @State private var details: DBModel.PokemonDBDetails?
+    @State private var viewState: Loadable
     @State private var svgUrl: String?
 
     @Environment(\.injected) private var injected: DIContainer
 
-    init(pokemonID: Int, details: Loadable<DBModel.PokemonDBDetails> = .notRequested) {
+    init(pokemonID: Int) {
         self.pokemonID = pokemonID
-        self._details = .init(initialValue: details)
+        self._details = .init(initialValue: nil)
+        self._viewState = .init(initialValue: .notRequested)
     }
 
     var body: some View {
@@ -26,19 +28,19 @@ struct PokemonDetailsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .task {
                 svgUrl = await injected.interactors.pokemons.getPokemonSVG(pokemonId: pokemonID)
+                await loadDetails(forceReload: false)
             }
     }
 
     @ViewBuilder private var content: some View {
-        switch details {
-        case .notRequested:
+        switch viewState {
+        case .notRequested, .isLoading:
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-        case .isLoading:
-            ProgressView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        case let .loaded(pokemonDetails):
-            loadedView(details: pokemonDetails, svgUrl: svgUrl)
+        case .loaded:
+            if let details {
+                loadedView(details: details, svgUrl: svgUrl)
+            }
         case let .failed(error):
             ErrorView(error: error) {
                 Task {
@@ -98,9 +100,14 @@ private extension PokemonDetailsView {
     }
 
     func loadDetails(forceReload: Bool) async {
-        $details.load {
-            try await injected.interactors.pokemons.getPokemonDetails(pokemonId: pokemonID, forceReload: forceReload)
+        viewState = .isLoading
+
+        guard let fetched = try? await injected.interactors.pokemons.getPokemonDetails(pokemonId: pokemonID, forceReload: forceReload) else {
+            return
         }
+
+        details = fetched
+        viewState = .loaded
     }
 
     func displayName(_ value: String) -> String {

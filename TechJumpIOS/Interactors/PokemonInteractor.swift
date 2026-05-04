@@ -7,7 +7,7 @@
 
 protocol PokemonInteractor {
     func getPokemonList(offset: Int, limit: Int) async throws -> ApiModel.PokemonList
-    func getPokemonDetails(pokemonId: Int, forceReload: Bool) async throws -> DBModel.PokemonDBDetails
+    func getPokemonDetails(pokemonId: Int, forceReload: Bool) async throws -> DBModel.PokemonDBDetails?
     func getPokemonSVG(pokemonId: Int) async -> String?
 }
 
@@ -23,7 +23,7 @@ struct RealPokemonInteractor: PokemonInteractor {
 
     func getPokemonDetails(
         pokemonId: Int, forceReload: Bool
-    ) async throws -> DBModel.PokemonDBDetails {
+    ) async throws -> DBModel.PokemonDBDetails? {
         if !forceReload,
            let stored = try? await dbRepository.pokemonDetails(pokemonId: pokemonId)
         {
@@ -35,7 +35,7 @@ struct RealPokemonInteractor: PokemonInteractor {
 
         try await dbRepository.store(pokemonDetails: d, pokemonSpecies: s)
         guard let stored = try? await dbRepository.pokemonDetails(pokemonId: pokemonId) else {
-            throw ValueIsMissingError()
+            return nil
         }
         return stored
     }
@@ -52,7 +52,7 @@ struct StubPokemonsInteractor: PokemonInteractor {
         .init(count: 0, next: "", previous: nil, results: [])
     }
 
-    func getPokemonDetails(pokemonId _: Int, forceReload _: Bool) async throws -> DBModel.PokemonDBDetails {
+    func getPokemonDetails(pokemonId _: Int, forceReload _: Bool) async throws -> DBModel.PokemonDBDetails? {
         .init(pokemonId: 0, types: [""], abilities: [DBModel.Ability(name: "", isHidden: true)], forms: [""], height: 0, weight: 0, baseExperience: 0, color: "blue", captureRate: 0, eggGroups: [""], shape: nil, habitat: nil)
     }
 }
