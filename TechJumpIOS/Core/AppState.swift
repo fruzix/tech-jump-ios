@@ -18,6 +18,3 @@ extension AppState {
     }
 }
 
-func == (lhs: AppState, rhs: AppState) -> Bool {
-    return lhs.routing == rhs.routing
-}
