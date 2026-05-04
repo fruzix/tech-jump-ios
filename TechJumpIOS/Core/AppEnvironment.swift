@@ -59,8 +59,11 @@ extension AppEnvironment {
         do {
             return try ModelContainer.appModelContainer()
         } catch {
-            // Log the error
-            return ModelContainer.stub
+            do {
+                return try ModelContainer.stub()
+            } catch {
+                fatalError("Failed to create fallback SwiftData stub container: \(error)")
+            }
         }
     }
 

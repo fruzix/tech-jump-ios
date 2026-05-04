@@ -16,8 +16,8 @@ extension ModelContainer {
         return try ModelContainer(for: schema, configurations: [modelConfiguration])
     }
 
-    static var stub: ModelContainer {
-        try! appModelContainer(inMemoryOnly: true, isStub: true)
+    static func stub() throws -> ModelContainer {
+        try appModelContainer(inMemoryOnly: true, isStub: true)
     }
 
     var isStub: Bool {
