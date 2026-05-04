@@ -33,7 +33,7 @@ struct RealPokemonInteractor: PokemonInteractor {
         async let species = webRepository.species(pokemonId: pokemonId)
         let (d, s) = try await (details, species)
 
-        try await dbRepository.store(pokemonDetails: details, pokemonSpecies: species)
+        try await dbRepository.store(pokemonDetails: d, pokemonSpecies: s)
         guard let stored = try? await dbRepository.pokemonDetails(pokemonId: pokemonId) else {
             throw ValueIsMissingError()
         }

@@ -24,12 +24,12 @@ struct DIContainer {
 
 extension DIContainer {
     struct WebRepositories {
-        let pokemons: PokemonDataWebRepository
-        let svg: SVGDataWebRepository
+        let pokemons: PokemonWebRepository
+        let svg: SVGWebRepository
     }
 
     struct DBRepositories {
-        let pokemons: MainDBRepository
+        let pokemons: PokemonDBRepository
         let svg: SVGDBRepository
     }
 
