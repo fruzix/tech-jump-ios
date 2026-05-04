@@ -33,13 +33,14 @@ struct PokemonList: View {
                 }
         }
         .ignoresSafeArea(edges: .bottom)
+        .task {
+            loadPokemonList(forceReload: false)
+        }
     }
 
     @ViewBuilder private var content: some View {
         switch pokemonsViewState {
-        case .notRequested:
-            defaultView()
-        case .isLoading:
+        case .notRequested, .isLoading:
             loadingView()
         case .loaded:
             loadedView()
@@ -55,16 +56,6 @@ private extension PokemonList {
     enum Constants {
         static let pageSize = 20
         static let preloadThreshold = 4
-    }
-
-    func defaultView() -> some View {
-        Text("").onAppear {
-            if !pokemons.isEmpty {
-                nextOffset = pokemons.count
-                pokemonsViewState = .loaded
-            }
-            loadPokemonList(forceReload: false)
-        }
     }
 
     func loadingView() -> some View {
