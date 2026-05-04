@@ -8,7 +8,7 @@ import Foundation
 import SwiftUI
 
 protocol SVGInteractor {
-    func load(data: LoadableSubject<Data>, url: String?, pokemonId: Int)
+    func load(url: String?, pokemonId: Int) async throws -> Data?
 }
 
 final class SVGDataInteractor: SVGInteractor {
@@ -20,22 +20,21 @@ final class SVGDataInteractor: SVGInteractor {
         self.dbRepository = dbRepository
     }
 
-    func load(data: LoadableSubject<Data>, url: String?, pokemonId: Int) {
+    func load(url: String?, pokemonId: Int) async throws -> Data? {
         guard let url else {
-            data.wrappedValue = .notRequested; return
+            return nil
         }
+
         if let cached = dbRepository.cachedSVG(for: pokemonId) {
-            data.wrappedValue = .loaded(cached)
-            return
+            return cached
         }
-        data.load { [dbRepository] in
-            let result = try await self.webRepository.loadSVG(url: url)
-            dbRepository.cacheSVG(result, for: pokemonId)
-            return result
-        }
+
+        let result = try await webRepository.loadSVG(url: url)
+        dbRepository.cacheSVG(result, for: pokemonId)
+        return result
     }
 }
 
 struct StubSVGInteractor: SVGInteractor {
-    func load(data: LoadableSubject<Data>, url: String?, pokemonId: Int) {}
+    func load(url: String?, pokemonId: Int) async throws -> Data? { nil }
 }

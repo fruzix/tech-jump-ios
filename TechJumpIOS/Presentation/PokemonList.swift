@@ -169,7 +169,7 @@ private extension PokemonList {
         guard currentIndex >= thresholdIndex else { return }
         guard hasMorePages else { return }
         guard !isLoadingNextPage else { return }
-        guard case .loaded = pokemonsState else { return }
+        guard case .loaded = pokemonsViewState else { return }
 
         isLoadingNextPage = true
 
