@@ -11,7 +11,8 @@ import SwiftUI
 
 struct PokemonList: View {
     @Query(sort: \DBModel.Pokemon.name) private var pokemons: [DBModel.Pokemon]
-    @State private(set) var pokemonsState: Loadable<Void>
+    @State private var pokemonsState: Loadable<Void>
+
     @State private var nextOffset = 0
     @State private var hasMorePages = true
     @State private var isLoadingNextPage = false
