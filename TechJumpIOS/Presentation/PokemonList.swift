@@ -5,7 +5,6 @@
 //  Created by Aleksandra Niewińska on 12/01/2026.
 //
 
-
 import SwiftData
 import SwiftUI
 
@@ -18,10 +17,6 @@ struct PokemonList: View {
     @State private var isLoadingNextPage = false
 
     @State var navigationPath = NavigationPath()
-
-    private var routingUpdate: AnyPublisher<Routing, Never> {
-        injected.appState.updates(for: \.routing.pokemonList)
-    }
 
     @Environment(\.injected) private var injected: DIContainer
 
