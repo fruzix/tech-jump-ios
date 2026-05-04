@@ -5,50 +5,42 @@
 //  Created by Aleksandra Niewińska on 12/01/2026.
 //
 
-import Combine
 import SwiftData
 import SwiftUI
 
 struct PokemonList: View {
     @Query(sort: \DBModel.Pokemon.name) private var pokemons: [DBModel.Pokemon]
-    @State private(set) var pokemonsState: Loadable<Void>
+    @State private var pokemonsViewState: Loadable
+
     @State private var nextOffset = 0
     @State private var hasMorePages = true
     @State private var isLoadingNextPage = false
 
     @State var navigationPath = NavigationPath()
-    @State private var routingState: Routing = .init()
-    private var routingBinding: Binding<Routing> {
-        $routingState.dispatched(to: injected.appState, \.routing.pokemonList)
-    }
-
-    private var routingUpdate: AnyPublisher<Routing, Never> {
-        injected.appState.updates(for: \.routing.pokemonList)
-    }
 
     @Environment(\.injected) private var injected: DIContainer
 
-    init(state: Loadable<Void> = .notRequested) {
-        self._pokemonsState = .init(initialValue: state)
+    init() {
+        self._pokemonsViewState = .init(initialValue: .notRequested)
     }
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
-                .onReceive(routingUpdate) { self.routingState = $0 }
                 .navigationTitle("Pokemons")
                 .navigationDestination(for: DBModel.Pokemon.ID.self) { pokemonID in
                     PokemonDetailsView(pokemonID: pokemonID)
                 }
         }
         .ignoresSafeArea(edges: .bottom)
+        .task {
+            loadPokemonList(forceReload: false)
+        }
     }
 
     @ViewBuilder private var content: some View {
-        switch pokemonsState {
-        case .notRequested:
-            defaultView()
-        case .isLoading:
+        switch pokemonsViewState {
+        case .notRequested, .isLoading:
             loadingView()
         case .loaded:
             loadedView()
@@ -64,16 +56,6 @@ private extension PokemonList {
     enum Constants {
         static let pageSize = 20
         static let preloadThreshold = 4
-    }
-
-    func defaultView() -> some View {
-        Text("").onAppear {
-            if !pokemons.isEmpty {
-                nextOffset = pokemons.count
-                pokemonsState = .loaded(())
-            }
-            loadPokemonList(forceReload: false)
-        }
     }
 
     func loadingView() -> some View {
@@ -149,7 +131,7 @@ private extension PokemonList {
         guard forceReload || pokemons.isEmpty else { return }
 
         isLoadingNextPage = true
-        pokemonsState.setIsLoading(cancelBag: CancelBag())
+        pokemonsViewState.setIsLoading()
 
         Task {
             do {
@@ -162,12 +144,12 @@ private extension PokemonList {
                     nextOffset += page.results.count
                     hasMorePages = !page.next.isEmpty
                     isLoadingNextPage = false
-                    pokemonsState = .loaded(())
+                    pokemonsViewState = .loaded
                 }
             } catch {
                 await MainActor.run {
                     isLoadingNextPage = false
-                    pokemonsState = .failed(error)
+                    pokemonsViewState = .failed(error)
                 }
             }
         }
@@ -178,7 +160,7 @@ private extension PokemonList {
         guard currentIndex >= thresholdIndex else { return }
         guard hasMorePages else { return }
         guard !isLoadingNextPage else { return }
-        guard case .loaded = pokemonsState else { return }
+        guard case .loaded = pokemonsViewState else { return }
 
         isLoadingNextPage = true
 
@@ -200,12 +182,6 @@ private extension PokemonList {
             }
         }
     }
-}
-
-// MARK: - Routing
-
-extension PokemonList {
-    struct Routing: Equatable {}
 }
 
 #Preview {

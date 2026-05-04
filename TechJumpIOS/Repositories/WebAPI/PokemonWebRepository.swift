@@ -1,5 +1,5 @@
 //
-//  PokemonWebRopository.swift
+//  PokemonWebRepository.swift
 //  TechJumpIOS
 //
 //  Created by Aleksandra Niewińska on 15/12/2025.

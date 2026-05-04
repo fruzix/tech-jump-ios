@@ -19,7 +19,15 @@ jobs:
         # Run `xcodebuild -version` locally to see versions on GitHub runners if you want to match.
         run: xcodebuild -version
 
+      - name: Cache SwiftLint
+        id: cache-swiftlint
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/bin/swiftlint
+          key: swiftlint-${{ hashFiles('.swiftlint.yaml') }}
+
       - name: Install SwiftLint
+        if: steps.cache-swiftlint.outputs.cache-hit != 'true'
         run: |
           brew update
           brew install swiftlint

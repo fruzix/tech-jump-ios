@@ -8,16 +8,7 @@
 import Combine
 import SwiftUI
 
-struct AppState: Equatable {
-    var routing = ViewRouting()
-}
+struct AppState: Equatable {}
 
-extension AppState {
-    struct ViewRouting: Equatable {
-        var pokemonList = PokemonList.Routing()
-    }
-}
 
-func == (lhs: AppState, rhs: AppState) -> Bool {
-    return lhs.routing == rhs.routing
-}
+

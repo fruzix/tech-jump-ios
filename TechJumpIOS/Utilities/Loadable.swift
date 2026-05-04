@@ -8,21 +8,11 @@
 import Foundation
 import SwiftUI
 
-typealias LoadableSubject<T> = Binding<Loadable<T>>
-
-enum Loadable<T> {
+enum Loadable {
     case notRequested
-    case isLoading(last: T?, cancelBag: CancelBag)
-    case loaded(T)
+    case isLoading
+    case loaded
     case failed(Error)
-
-    var value: T? {
-        switch self {
-        case let .loaded(value): return value
-        case let .isLoading(last, _): return last
-        default: return nil
-        }
-    }
 
     var error: Error? {
         switch self {
@@ -31,22 +21,13 @@ enum Loadable<T> {
         }
     }
 
-    mutating func setIsLoading(cancelBag: CancelBag) {
-        self = .isLoading(last: value, cancelBag: cancelBag)
+    mutating func setIsLoading() {
+        self = .isLoading
     }
 }
 
-extension LoadableSubject {
-    func load<T>(_ resource: @escaping () async throws -> T) where Value == Loadable<T> {
-        let cancelBag = CancelBag()
-        wrappedValue.setIsLoading(cancelBag: cancelBag)
-        let task = Task {
-            do {
-                wrappedValue = try .loaded(await resource())
-            } catch {
-                wrappedValue = .failed(error)
-            }
-        }
-        task.store(in: cancelBag)
+struct ValueIsMissingError: Error {
+    var localizedDescription: String {
+        NSLocalizedString("Data is missing", comment: "")
     }
 }

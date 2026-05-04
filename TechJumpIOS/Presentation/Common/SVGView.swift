@@ -5,7 +5,6 @@
 //  Created by Aleksandra Niewińska on 23/03/2026.
 //
 
-import Combine
 import SwiftSVG
 import SwiftUI
 
@@ -13,25 +12,28 @@ struct SVGView: View {
     private let svgURL: String
     private let pokemonId: Int
     @Environment(\.injected) var injected: DIContainer
-    @State private var svg: Loadable<Data>
+    @State private var svgViewState: Loadable
+    @State private var svg: Data?
 
-    init(svgURL: String, pokemonId: Int, svg: Loadable<Data> = .notRequested) {
+    init(svgURL: String, pokemonId: Int) {
         self.svgURL = svgURL
         self.pokemonId = pokemonId
-        self._svg = .init(initialValue: svg)
+        self._svg = .init(initialValue: nil)
+        self._svgViewState = .init(initialValue: .notRequested)
     }
 
     var body: some View {
         content
+            .task {
+                await loadSvg()
+            }
     }
 
     @ViewBuilder private var content: some View {
-        switch svg {
-        case .notRequested:
-            defaultView()
-        case .isLoading:
+        switch svgViewState {
+        case .notRequested, .isLoading:
             loadingView()
-        case let .loaded(svg):
+        case .loaded:
             loadedView(svg)
         case let .failed(error):
             failedView(error)
@@ -42,21 +44,21 @@ struct SVGView: View {
 // MARK: - Side Effects
 
 private extension SVGView {
-    func loadSvg() {
-        injected.interactors.svg
-            .load(data: $svg, url: svgURL, pokemonId: pokemonId)
+    func loadSvg() async {
+        svgViewState = .isLoading
+
+        guard let fetched = try? await injected.interactors.svg.load(url: svgURL, pokemonId: pokemonId) else {
+            return
+        }
+
+        svg = fetched
+        svgViewState = .loaded
     }
 }
 
 // MARK: - Content
 
 private extension SVGView {
-    func defaultView() -> some View {
-        Text("").onAppear {
-            self.loadSvg()
-        }
-    }
-
     func loadingView() -> some View {
         ProgressView()
             .progressViewStyle(.circular)
@@ -69,8 +71,13 @@ private extension SVGView {
             .padding()
     }
 
-    func loadedView(_ data: Data) -> some View {
-        SVGRenderView(svgData: data)
+    @ViewBuilder
+    func loadedView(_ data: Data?) -> some View {
+        if let data {
+            SVGRenderView(svgData: data)
+        } else {
+            failedView(ValueIsMissingError())
+        }
     }
 }
 
