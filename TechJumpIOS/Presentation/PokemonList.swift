@@ -18,10 +18,6 @@ struct PokemonList: View {
     @State private var isLoadingNextPage = false
 
     @State var navigationPath = NavigationPath()
-    @State private var routingState: Routing = .init()
-    private var routingBinding: Binding<Routing> {
-        $routingState.dispatched(to: injected.appState, \.routing.pokemonList)
-    }
 
     private var routingUpdate: AnyPublisher<Routing, Never> {
         injected.appState.updates(for: \.routing.pokemonList)
@@ -36,7 +32,7 @@ struct PokemonList: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
-                .onReceive(routingUpdate) { self.routingState = $0 }
+
                 .navigationTitle("Pokemons")
                 .navigationDestination(for: DBModel.Pokemon.ID.self) { pokemonID in
                     PokemonDetailsView(pokemonID: pokemonID)
@@ -201,12 +197,6 @@ private extension PokemonList {
             }
         }
     }
-}
-
-// MARK: - Routing
-
-extension PokemonList {
-    struct Routing: Equatable {}
 }
 
 #Preview {
